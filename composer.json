@@ -1,0 +1,32 @@
+{
+    "name": "compie/logz-handler",
+    "description": "send logs from debugbar files to logz.io",
+    "type": "library",
+    "license": "mit",
+    "authors": [
+        {
+            "name": "Ohad Sadan",
+            "email": "ohad.s@compie.co.il"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+      "barryvdh/laravel-debugbar": "2.4.3",
+      "laravel/framework": "5.3.*",
+      "symfony/finder": "~2.7|~3.0"
+    },
+    "extra": {
+      "laravel": {
+        "providers": [
+          "Compie\\LogzHandler\\Providers\\LogzHandlerProvider"
+        ]
+      }
+    },
+    "autoload": {
+      "psr-4": {
+        "Compie\\LogzHandler\\": "src/"
+      }
+
+    }
+
+}
