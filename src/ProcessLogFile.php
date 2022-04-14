@@ -128,7 +128,7 @@ class ProcessLogFile {
 
     $queries = collect($this->logData['queries']['statements'])
       ->filter(function($value,$key){
-          return $value['duration'] > 0.0001;
+          return $value['duration'] > $this->conf['queryCaptureMinTime'];
         })
       ->map(function($item){
           return collect([
