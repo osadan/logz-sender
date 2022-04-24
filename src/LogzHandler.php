@@ -33,11 +33,9 @@ class LogzHandler {
     ->map(function($fileId){
         return $this->storage->get($fileId);
       })->each(function($singleLogInfo) use($logzSender){
-
+        
         $logs = ProcessLogFile::collect($singleLogInfo, $this->app->config['logz']);
-        //print_r($logs);
         $result = $logzSender->send($logs);
-        //var_dump($result);
         unlink($this->dirname . '/'. $singleLogInfo['__meta']['id'] . ".json");
         
       });

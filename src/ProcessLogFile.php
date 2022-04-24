@@ -34,6 +34,7 @@ class ProcessLogFile {
         "@uri" => $this->logData['__meta']['uri'],
         "@ip" => $this->logData['__meta']['ip'],
         "@token" => $this->logData['session']['_token'] ?? 'internal',
+        "@name" => $this->logData['auth']['names'] ?? null
       ];
 
     return $this;
@@ -80,6 +81,7 @@ class ProcessLogFile {
     $request->put('events_count', $this->logData['event']['nb_measures'] ?? null);
     $request->put('events_duration', $this->logData['event']['duration_str'] ?? null);
     $request->put('query_count',$this->logData['queries']['nb_statements'] ?? null);
+    $request->put('failed_queries',$this->logData['queries']['nb_failed_statements'] ?? null);
     $request->put('query_duration', $this->logData['queries']['accumulated_duration_str'] ?? null);
     $request->put('params', $this->getRequestParams());
     $request->put('message', $this->mainMessageValue('request'));
