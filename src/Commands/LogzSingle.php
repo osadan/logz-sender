@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 //use Compie\LogzHandler\Providers\LogzHandlerProvider;
 use Compie\LogzHandler\LogzHandler;
 
-class LogzSender extends Command
+class LogzSingle extends Command
 {
 
   protected $handler;
@@ -32,6 +32,7 @@ class LogzSender extends Command
   //
   public function __construct(LogzHandler $logzHandler)
   {
+    var_dump('2');
     parent::__construct();
     $this->handler = $logzHandler;
   }

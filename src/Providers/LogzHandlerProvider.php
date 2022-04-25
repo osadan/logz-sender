@@ -26,7 +26,6 @@ class LogzHandlerProvider extends ServiceProvider
      */
     public function register()
     {
-
       $configPath = __DIR__ . '/../../config/logz.php';
       $this->mergeConfigFrom($configPath, 'logz');
 
@@ -46,8 +45,13 @@ class LogzHandlerProvider extends ServiceProvider
         return new LogzHandler\Commands\LogzSender($app['logz-handler']);
       }
     );
-
-    $this->commands(['command.logz.send']);
+    $this->app->singleton(
+      'command.logz.single',
+      function ($app) {
+        return new LogzHandler\Commands\LogzSingle($app['logz-handler']);
+      }
+    );
+    $this->commands(['command.logz.send', 'command.logz.single']);
     }
 
   /**
