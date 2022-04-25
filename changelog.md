@@ -1,5 +1,7 @@
 ##change log for logzio debugbar integration
 
+### v1.0.6
+- add single file process for debugging 
 ### v1.0.5
 - fix a bug where message and exception message was the same messages
 

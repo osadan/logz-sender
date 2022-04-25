@@ -44,6 +44,13 @@ class LogzHandler {
       });
   }
 
+  public function processSingle($id)
+  {
+    $singleLogInfo = $this->storage->get($id);
+    $logs = ProcessLogFile::collect($singleLogInfo, $this->app->config['logz']);
+    print(json_encode($logs));
+  }
+
   public function getAllFiles (){
     return Finder::create()->files()->name('*.json')->in($this->dirname);
   }
