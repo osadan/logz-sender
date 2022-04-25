@@ -34,7 +34,9 @@ class ProcessLogFile {
         "@uri" => $this->logData['__meta']['uri'],
         "@ip" => $this->logData['__meta']['ip'],
         "@token" => $this->logData['session']['_token'] ?? 'internal',
-        "@name" => $this->logData['auth']['names'] ?? null
+        "@name" => $this->logData['auth']['names'] ?? null,
+        "@server_hostname" => gethostname(),
+
       ];
 
     return $this;

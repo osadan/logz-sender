@@ -1,5 +1,8 @@
 ##change log for logzio debugbar integration
 
+### v1.0.4
+- add server host name
+
 ### v1.0.3
 - support POST and request_request
 
