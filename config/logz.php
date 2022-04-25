@@ -6,6 +6,7 @@
     'logzioAccount' => env("LOGZIO_ACCOUNT" , null),
     'logzioEndPoint' => env("LOGZIO_ENDPOINT", null),
     'disabledPathParams' => env("PATH_PARAMS_DISABLED", ['password','login']),
+    'disabledUris' => env("DISABLED_URIS", ['favicon.ico']),
     'queryCaptureMinTime' => env("LOGZIO_QUERY_CAPTURE_MIN_TIME", 0.250)
   ];
   

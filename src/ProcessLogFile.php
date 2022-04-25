@@ -83,16 +83,17 @@ class ProcessLogFile {
     $request->put('query_count',$this->logData['queries']['nb_statements'] ?? null);
     $request->put('failed_queries',$this->logData['queries']['nb_failed_statements'] ?? null);
     $request->put('query_duration', $this->logData['queries']['accumulated_duration_str'] ?? null);
-    $request->put('params', $this->getRequestParams());
+    $request->put('params_request', $this->getRequestParamsAsRequest());
+    $request->put('params_post', $this->getRequestParamsAsPost());
     $request->put('message', $this->mainMessageValue('request'));
     
     $this->logs = $this->logs->merge(collect([$request]));
     return $this;
   }
 
-  public function getRequestParams(){
+  public function getRequestParamsAsRequest(){
     
-    if($this->logData['request']['$_POST'] === '[]'){
+    if(($this->logData['request']['request_request'] ?? '[]') === '[]'){
         return null;
     }
     $disabledPathParams = collect($this->conf['disabledPathParams']);
@@ -103,7 +104,24 @@ class ProcessLogFile {
      if($items->count() > 0){
        return null; 
      } 
-     return $this->logData['request']['$_POST'];
+     return $this->logData['request']['request_request'];
+  }
+
+  public function getRequestParamsAsPost()
+  {
+
+    if (($this->logData['request']['$_POST'] ?? '[]') === '[]') {
+      return null;
+    }
+    $disabledPathParams = collect($this->conf['disabledPathParams']);
+    $uri = $this->logData['__meta']['uri'];
+    $items = $disabledPathParams->filter(function ($item) use ($uri) {
+      return strpos($uri, $item) !== false;
+    });
+    if ($items->count() > 0) {
+      return null;
+    }
+    return $this->logData['request']['$_POST'];
   }
 
   public function setMeasures(){
