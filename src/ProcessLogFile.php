@@ -55,8 +55,9 @@ class ProcessLogFile {
       ->map(function ($item) {
         $message = collect([
           'logType' => 'message',
-          'message' => $item['message'],
+          'message' => $this->mainMessageValue('message')." ".$item['message'],
           'label' => $item['label'],
+          'message_text' => $item['message']
         ]);
         if($item['label'] === 'exception' || $item['label'] === 'critical' || $item['label'] === 'emergency'){
           $message->put('notification', 'email');
@@ -136,7 +137,7 @@ class ProcessLogFile {
                       "logType" => "measures",
                       "measure_key" => $item['label'],
                       "duration" => $item['duration_str'],
-                      'message' =>   $this->mainMessageValue('measures')
+                      'message' =>   $this->mainMessageValue('measures'). " ". $item['label']
                     ]);
                   });
       $this->logs = $this->logs->merge($measures);
