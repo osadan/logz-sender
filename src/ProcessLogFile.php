@@ -58,7 +58,7 @@ class ProcessLogFile {
           'message' => $item['message'],
           'label' => $item['label'],
         ]);
-        if($item['label'] === 'exception'){
+        if($item['label'] === 'exception' || $item['label'] === 'critical' || $item['label'] === 'emergency'){
           $message->put('notification', 'email');
         }
         return $message;
@@ -176,7 +176,7 @@ class ProcessLogFile {
                   ->map(function($item){
                     return collect([
                       "logType" => "exception",
-                      "message" => $item['message'],
+                      "exception_message" => $item['message'],
                       "file" => $item["file"],
                       "line" => $item['line'],
                       "surrounding_lines" => implode("",$item["surrounding_lines"]),
