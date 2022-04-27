@@ -28,7 +28,7 @@ class LogzIoSender {
       if ($result === false) {
         $curlErrno = curl_errno($ch);
         var_dump($curlErrno);
-        return $curlErrno;
+        throw new \Exception('curl error '.$curlErrno);
       }
       curl_close($ch);
       return $result;

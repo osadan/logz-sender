@@ -1,5 +1,10 @@
 ##change log for logzio debugbar integration
 
+### 1.0.9
+  - add auth id
+  - add all duration numbers
+  - add some error handling for process ( still need to create some clearing for the logs in the file)
+
 ### v1.0.8
 - change message for message log type
 

@@ -32,14 +32,17 @@ class LogzHandler {
     ->pluck('filename')
     ->map(function($fileId){
         return $this->storage->get($fileId);
-      })->each(function($singleLogInfo) use($logzSender){
+      })->map(function($singleLogInfo) use($logzSender){
         try{
         $logs = ProcessLogFile::collect($singleLogInfo, $this->app->config['logz']);
         $result = $logzSender->send($logs);
         unlink($this->dirname . '/'. $singleLogInfo['__meta']['id'] . ".json");
+          echo  $singleLogInfo['__meta']['id'] . 'was sent and removed ';
         }
         catch(\Exception $exception){
-          var_dump($exception);
+          echo 'And my error is: ' . $exception->getMessage();
+          //var_dump($exception);
+          exit;
         }
       });
   }

@@ -1,6 +1,7 @@
 <?php namespace Compie\LogzHandler;
 
-use Monolog\Utils;
+use Illuminate\Support\Facades\Auth;
+
 
 class ProcessLogFile {
   protected $logs;
@@ -27,6 +28,7 @@ class ProcessLogFile {
   }
 
   public function setMeta(){
+
       $timestamp = new \DateTimeImmutable($this->logData['__meta']['datetime']);
       $this->meta = [
         "@id" => $this->logData['__meta']['id'],
@@ -35,8 +37,9 @@ class ProcessLogFile {
         "@ip" => $this->logData['__meta']['ip'],
         "@token" => $this->logData['session']['_token'] ?? 'internal',
         "@name" => $this->logData['auth']['names'] ?? null,
+        "@user_id" =>  (Auth::check() ? Auth::id() : null),
         "@server_hostname" => gethostname(),
-
+        "@env" => env("APP_ENV", 'dev')
       ];
 
     return $this;
@@ -76,16 +79,21 @@ class ProcessLogFile {
       return $value['label'] === 'Booting' || $value['label'] === 'Application';
     });
     $request->put('booting_time',$measures[0]['duration_str'] ?? null);
-    $request->put('application_time', $measures[1]['duration_str'] ?? null);
+    $request->put('application_time', $measures[1]['duration'] ?? null);
+    $request->put('booting_time_num', $measures[0]['duration'] ?? null);
+    $request->put('application_time_num', $measures[1]['duration_str'] ?? null);
     $request->put('peak_usage', $this->logData['memory']['peak_usage_str'] ?? null);
     $request->put('method', $this->logData['__meta']['method'] ?? null) ;
     $request->put('controller', $this->logData['route']['controller'] ?? null) ;
     $request->put('request_duration', $this->logData['time']['duration_str'] ?? null);
+    $request->put('request_duration_num', $this->logData['time']['duration'] ?? null);
     $request->put('events_count', $this->logData['event']['nb_measures'] ?? null);
     $request->put('events_duration', $this->logData['event']['duration_str'] ?? null);
+    $request->put('events_duration_num', $this->logData['event']['duration'] ?? null);
     $request->put('query_count',$this->logData['queries']['nb_statements'] ?? null);
     $request->put('failed_queries',$this->logData['queries']['nb_failed_statements'] ?? null);
     $request->put('query_duration', $this->logData['queries']['accumulated_duration_str'] ?? null);
+    $request->put('query_duration_num', $this->logData['queries']['accumulated_duration'] ?? null);
     $request->put('params_request', $this->getRequestParamsAsRequest());
     $request->put('params_post', $this->getRequestParamsAsPost());
     $request->put('message', $this->mainMessageValue('request'));
@@ -137,6 +145,7 @@ class ProcessLogFile {
                       "logType" => "measures",
                       "measure_key" => $item['label'],
                       "duration" => $item['duration_str'],
+                      "duration_num" => $item['duration'],
                       'message' =>   $this->mainMessageValue('measures'). " ". $item['label']
                     ]);
                   });
@@ -159,6 +168,7 @@ class ProcessLogFile {
             'sql' => $item['sql'],
             'stmt_id' => $item['stmt_id'],
             'duration' => $item['duration_str'],
+            'duration_num' => $item['duration'],
             'message' => $this->mainMessageValue('queries'),
             'notifications' => ['email']
           ]); 
