@@ -62,7 +62,7 @@ class ProcessLogFile {
           'label' => $item['label'],
           'message_text' => $item['message']
         ]);
-        if($item['label'] === 'exception' || $item['label'] === 'critical' || $item['label'] === 'emergency'){
+        if($item['label'] === 'error' || $item['label'] === 'critical' || $item['label'] === 'emergency'){
           $message->put('notification', 'email');
         }
         return $message;
