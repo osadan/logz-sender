@@ -36,8 +36,9 @@ class LogzHandler {
         try{
         $logs = ProcessLogFile::collect($singleLogInfo, $this->app->config['logz']);
         $result = $logzSender->send($logs);
+        echo  $singleLogInfo['__meta']['id'] . "was sent \n\r";
         unlink($this->dirname . '/'. $singleLogInfo['__meta']['id'] . ".json");
-          echo  $singleLogInfo['__meta']['id'] . 'was sent and removed ';
+          echo  $singleLogInfo['__meta']['id'] . "was removed \n\r";
         }
         catch(\Exception $exception){
           echo 'And my error is: ' . $exception->getMessage();

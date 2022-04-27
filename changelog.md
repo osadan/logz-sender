@@ -1,5 +1,8 @@
 ##change log for logzio debugbar integration
 
+## v1.0.11
+- trying to fix problem with Auth:id
+
 ### 1.0.9
   - add auth id
   - add all duration numbers

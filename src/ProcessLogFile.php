@@ -37,7 +37,7 @@ class ProcessLogFile {
         "@ip" => $this->logData['__meta']['ip'],
         "@token" => $this->logData['session']['_token'] ?? 'internal',
         "@name" => $this->logData['auth']['names'] ?? null,
-        "@user_id" =>  (Auth::check() ? Auth::id() : null),
+        "@user_id" =>  (Auth::user() ? Auth::user()->id : null),
         "@server_hostname" => gethostname(),
         "@env" => env("APP_ENV", 'dev')
       ];
