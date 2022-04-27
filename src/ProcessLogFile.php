@@ -28,7 +28,7 @@ class ProcessLogFile {
   }
 
   public function setMeta(){
-
+      preg_match('/\"id\" => (\d+)/', $this->logData['auth']['guards']['web'] ?? null, $matches);
       $timestamp = new \DateTimeImmutable($this->logData['__meta']['datetime']);
       $this->meta = [
         "@id" => $this->logData['__meta']['id'],
@@ -37,7 +37,7 @@ class ProcessLogFile {
         "@ip" => $this->logData['__meta']['ip'],
         "@token" => $this->logData['session']['_token'] ?? 'internal',
         "@name" => $this->logData['auth']['names'] ?? null,
-        "@user_id" =>  (Auth::user() ? Auth::user()->id : null),
+        "@user_id" =>  $matches[1] && null,
         "@server_hostname" => gethostname(),
         "@env" => env("APP_ENV", 'dev')
       ];

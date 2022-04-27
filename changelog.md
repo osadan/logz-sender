@@ -1,5 +1,8 @@
 ##change log for logzio debugbar integration
 
+## v1.0.12
+- use pattern to figure user id,
+
 ## v1.0.11
 - trying to fix problem with Auth:id
 
