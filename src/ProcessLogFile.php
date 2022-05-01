@@ -98,6 +98,10 @@ class ProcessLogFile {
     $request->put('params_post', $this->getRequestParamsAsPost());
     $request->put('message', $this->mainMessageValue('request'));
     
+    if($measures[0]['duration'] > 1){
+      $request->put('notifications',['email']);
+    }
+    
     $this->logs = $this->logs->merge(collect([$request]));
     return $this;
   }

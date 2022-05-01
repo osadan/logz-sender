@@ -1,5 +1,8 @@
 ##change log for logzio debugbar integration
 
+## v1.1.1
+- add email notification when booting time is bigger then 1
+
 ## v1.0.12
 - use pattern to figure user id,
 
