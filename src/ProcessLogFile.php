@@ -35,22 +35,27 @@ class ProcessLogFile
   public function setMeta()
   {
     preg_match('/\"id\" => (\d+)/', $this->logData['auth']['guards']['web'] ?? null, $matches);
+    $requestServerValues = $this->parseRequestStrings($this->logData['request']);
     $timestamp = new \DateTimeImmutable($this->logData['__meta']['datetime']);
     $this->meta = [
       "@id" => $this->logData['__meta']['id'],
       "@timestamp" => $timestamp->format('c'),
       "@uri" => $this->logData['__meta']['uri'],
       "@ip" => $this->logData['__meta']['ip'],
-      "@forwarded_for" => empty($this->logData['request']['request_server']['HTTP_X_FORWARDED_FOR'])
+      "@forwarded_for" => empty($requestServerValues['HTTP_X_FORWARDED_FOR'])
         ? "" :
-        $this->logData['request']['request_server']['HTTP_X_FORWARDED_FOR'],
+        $requestServerValues['HTTP_X_FORWARDED_FOR'],
       "@token" => $this->logData['session']['_token'] ?? 'internal',
       "@name" => $this->logData['auth']['names'] ?? null,
       "@user_id" =>  $matches[1] ?? null,
       "@server_hostname" => gethostname(),
-      "@server_address" => $this->logData['request']['request_server']['SERVER_ADDRESS'],
+      "@server_address" =>  empty($requestServerValues['SERVER_ADDR'])
+        ? "" :
+        $requestServerValues['SERVER_ADDR'],
       "@user_agent" =>
-      $this->logData['request']['request_server']['HTTP_USER_AGENT'],
+      empty($requestServerValues['HTTP_USER_AGENT'])
+        ? "" :
+        $requestServerValues['HTTP_USER_AGENT'],
       "@env" => env("APP_ENV", 'dev')
     ];
 
@@ -242,5 +247,16 @@ class ProcessLogFile
       return $carry;
     }, []);
     return implode("\n", $records);
+  }
+
+  public function parseRequestStrings($str)
+  {
+    $values = [];
+    $res = [];
+    preg_match_all('/\\"(.*?)\\"\s?=>\s?\\"(.*?)\\"/', $str, $values, PREG_SET_ORDER);
+    foreach ($values as  $valueArr) {
+      $res[$valueArr[1]] = $valueArr[2];
+    }
+    return $res;
   }
 }
