@@ -35,7 +35,7 @@ class ProcessLogFile
   public function setMeta()
   {
     preg_match('/\"id\" => (\d+)/', $this->logData['auth']['guards']['web'] ?? null, $matches);
-    $requestServerValues = $this->parseRequestStrings($this->logData['request']['requset_server']);
+    $requestServerValues = $this->parseRequestStrings($this->logData['request']['request_server']);
     $timestamp = new \DateTimeImmutable($this->logData['__meta']['datetime']);
     $this->meta = [
       "@id" => $this->logData['__meta']['id'],
