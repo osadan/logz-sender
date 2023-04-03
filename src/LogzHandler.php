@@ -36,7 +36,12 @@ class LogzHandler
       })
       ->pluck('filename')
       ->map(function ($fileId) {
-        return $this->storage->get($fileId);
+        try {
+          return $this->storage->get($fileId);
+        } catch (\Exception $exception) {
+          \Log::error($exception);
+          return false;
+        }
       })->map(function ($singleLogInfo) use ($logzSender) {
         try {
           if ($singleLogInfo['__meta']['method'] !== 'HEAD') {
@@ -45,6 +50,7 @@ class LogzHandler
             $logzSender->send($logs);
           }
         } catch (\Exception $exception) {
+          \Log::error($exception);
           echo 'And my error is: ' . $exception->getMessage();
           echo 'error in ' . $singleLogInfo['__meta']['id'];
         } finally {
