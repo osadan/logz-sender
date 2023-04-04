@@ -49,12 +49,13 @@ class LogzHandler
             $logs = ProcessLogFile::collect($singleLogInfo, $this->app->config['logz']);
             $logzSender->send($logs);
           }
+          unlink($this->dirname . '/' . $singleLogInfo['__meta']['id'] . ".json");
         } catch (\Exception $exception) {
           \Log::error($exception);
           echo 'And my error is: ' . $exception->getMessage();
           echo 'error in ' . $singleLogInfo['__meta']['id'];
         } finally {
-          unlink($this->dirname . '/' . $singleLogInfo['__meta']['id'] . ".json");
+
           echo  $singleLogInfo['__meta']['id'] . "was removed \n\r";
         }
       });

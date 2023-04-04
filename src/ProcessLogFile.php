@@ -143,7 +143,7 @@ class ProcessLogFile
     if ($items->count() > 0) {
       return null;
     }
-    return $this->logData['request']['request_request'];
+    return json_encode($this->parseRequestStrings($this->logData['request']['request_request']));
   }
 
   public function getRequestParamsAsPost()
