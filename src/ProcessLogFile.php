@@ -110,6 +110,10 @@ class ProcessLogFile
     $request->put('route_permissions', $this->logData['route']['as'] ?? null);
     $request->put('request_duration', $this->logData['time']['duration_str'] ?? null);
     $request->put('request_duration_num', $this->logData['time']['duration'] ?? null);
+    $request->put(
+      'gap_between_app_and_query',
+      ($this->logData['time']['duration'] ?? 0) - ($this->logData['queries']['accumulated_duration'] ?? 0)
+    );
     $request->put('events_count', $this->logData['event']['nb_measures'] ?? null);
     $request->put('events_duration', $this->logData['event']['duration_str'] ?? null);
     $request->put('events_duration_num', $this->logData['event']['duration'] ?? null);
