@@ -98,6 +98,7 @@ class ProcessLogFile
     $measures = collect($this->logData['time']['measures'])->filter(function ($value, $key) {
       return $value['label'] === 'Booting' || $value['label'] === 'Application';
     });
+    $request->put('status_code', (int)($this->logData['request']['status_code'] ?? 0));
     $request->put('booting_time', $measures[0]['duration_str'] ?? null);
     $request->put('application_time', $measures[1]['duration_str'] ?? null);
     $request->put('booting_time_num', $measures[0]['duration'] ?? null);
