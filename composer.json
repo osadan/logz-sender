@@ -12,7 +12,6 @@
   "minimum-stability": "dev",
   "require": {
     "barryvdh/laravel-debugbar": "2.4.3",
-    "laravel/framework": "5.*.*",
     "symfony/finder": "~2.7|~3.0"
   },
   "extra": {

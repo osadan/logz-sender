@@ -56,7 +56,7 @@ class ProcessLogFile
       empty($requestServerValues['HTTP_USER_AGENT'])
         ? "" :
         $requestServerValues['HTTP_USER_AGENT'],
-      "@env" => env("APP_ENV", 'dev')
+      "@env" => $this->conf['appEnv'] ?? 'no env'
     ];
 
     return $this;
@@ -103,7 +103,7 @@ class ProcessLogFile
     $request->put('application_time', $measures[1]['duration_str'] ?? null);
     $request->put('booting_time_num', $measures[0]['duration'] ?? null);
     $request->put('application_time_num', $measures[1]['duration'] ?? null);
-    $request->put('peak_usage', $this->logData['memory']['peak_usage_str'] ?? null);
+    $request->put('peak_usage_str', $this->logData['memory']['peak_usage_str'] ?? null);
     $request->put('peak_usage', $this->logData['memory']['peak_usage'] ?? null);
     $request->put('method', $this->logData['__meta']['method'] ?? null);
     $request->put('controller', $this->logData['route']['controller'] ?? null);
