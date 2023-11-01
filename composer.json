@@ -10,10 +10,7 @@
     }
   ],
   "minimum-stability": "dev",
-  "require": {
-    "barryvdh/laravel-debugbar": "3.5.0",
-    "symfony/finder": "~2.7|~3.0"
-  },
+  "require": {},
   "extra": {
     "laravel": {
       "providers": [
